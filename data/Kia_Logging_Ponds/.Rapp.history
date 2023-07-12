@@ -1,0 +1,53 @@
+### Analysis of final topa and habili data frame#
+# R Hamilton, CJ Brown 20 Nov 14#
+### Still to do#
+#
+#Update base map to have habitats. #
+#Multivariate analysis of benthic cover#
+# Complete path analysis and make path graph#
+#do a path with secchi too. #
+####Packages#
+library(rgdal)#
+library(raster)#
+library(RColorBrewer)#
+#
+#Colour palettes#
+ library(wesanderson)#
+#### Data#
+dat <- read.csv('/Users/s2973410/Documents/CT project/SNAP proposal/SI data/Fish_dataframe.csv', header=T)#
+setwd('/Users/s2973410/Documents/CT project/ECR project/Land-use shape files/')#
+landuse <- raster('GRID_sol_update/sol_update')#
+catnames = landuse@data@attributes[[1]][,3]#
+setwd('/Users/s2973410/Documents/CT project/SNAP proposal/SI data/For_Rick_KiaLogPonds_2014_0514')#
+ponds <- readOGR(".", "Kia_Logging_Ponds")
+n <- nrow(dat)#
+dat$presT <-rep(0, n)#
+dat$presT[dat$pres.topa>0] =1#
+dat$presH <- rep(0, n)#
+dat$presH[dat$pres.habili>0] =1
+########################################################
+##### Maps#
+########################################################
+#
+pal = wes.palette(5, 'Zissou')#
+plotcol <- c(pal[3], pal[3], 'white', pal[1], pal[3], pal[1], pal[1], pal[3], pal[3], pal[3])#
+### Plot of sites#
+dev.new(width = 12, height = 6)#
+par(mfrow =c(1,2))#
+plot(landuse, col = plotcol, main = 'Sites', xlim =c(409000, 460000), ylim =c(9140000, 9190000), legend=F)#
+points(ponds, pch = 16, col = pal[5])#
+irow <- which(dat$logged =='Logged')#
+points(dat$coordx[irow], dat$coordy[irow], pch=0, col='black')#
+irow <- which(dat$logged =='Not logged')#
+points(dat$coordx[irow], dat$coordy[irow], pch=21, col='black', bg='white')
+legend('topright', legend =c('Logged', 'Not logged', 'Logging ponds'), pch =c(0, 21, 16), col=c('black','black','red'))
+## Map of visibility#
+range(dat$secchi)#
+mycols <- brewer.pal(6, 'YlOrRd')#
+probbrks <- seq(3,18, length.out=6)#
+colcut <- cut(dat$secchi, breaks =probbrks, labels=F)#
+probcol <- mycols[colcut] #copy the factor#
+#
+plot(landuse, col = plotcol, main = 'Visibility (metres)', xlim =c(409000, 460000), ylim =c(9140000, 9190000), legend=F)#
+points(dat$coordx, dat$coordy, cex = 1.2,pch = 22, bg =probcol)#
+legend('topright', legend =probbrks, pch=15, col =mycols, bg='white')
