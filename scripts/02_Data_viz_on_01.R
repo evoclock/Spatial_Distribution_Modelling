@@ -6,7 +6,7 @@ library(dplyr)
 library(sf)
 library(tmap)
 library(patchwork)
-load("outputs/2021-09-20_cleaned-data.rda")
+load("outputs/Cleaned-data.rda")
 
 
 # Save each plot as a separate object to use with patchwork
@@ -32,10 +32,11 @@ p3 = ggplot(sdat2) +
   theme_minimal()
 p3
 
-plots_all = p1 + p2 + p3
+plots_all = p2 + p3 + p1
 plots_all
 
-ggsave("images/plot1.png", plots_all, width = 8, height = 3)
+ggsave("images/02_coral_cover_fish_presence_and_distance_plots.png", 
+       plots_all, width = 8, height = 3)
 
 # Making maps
 

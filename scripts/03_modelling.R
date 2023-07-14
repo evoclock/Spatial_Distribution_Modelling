@@ -7,8 +7,9 @@
 # corals is well established. One could imagine a similar approach to coastal
 # bird populations would be tractable as temperature would also have an effect
 # upstream on birds that predate on fish.
+rm(list = ls())
 
-load("outputs/2021-09-20_cleaned-data.rda")
+load("outputs/Cleaned-data.rda")
 library(visreg)
 library(performance)
 library(see)
@@ -202,7 +203,7 @@ tland + m1_gam_plots[[1]]
 m1_gam_plots[[2]]
 
 
-# Repeating the GAM but with a Gaussian Process spline, which is similarto
+# Repeating the GAM but with a Gaussian Process spline, which is similar to
 # krigging (spatial interpolation)
 
 m2_gam = gam(pres.topa ~ s(x, y, bs = "gp"),
@@ -241,5 +242,7 @@ concurvity(m3_gam, full = FALSE)
 # splines, which indicates Gaussian process splines should be used with caution 
 # in cases like these.
 
-save(m1_gam, m2_gam, m3_gam, m1_gls, m2_gls, glm1_nb, sdat2,
+save(sdat2, glm1_nb, glm1_nb_semivar, kia_crs, land, logponds, tland, m1_gam, 
+     m1_gls, m2_gam, m2_gls, m3_gam, cs1Sph, distmat, site_distmat,
      file = "outputs/Models.rda")
+

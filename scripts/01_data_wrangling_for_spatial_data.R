@@ -134,5 +134,5 @@ ggplot(sdat2) +
   geom_point() +
   theme_minimal()
 
-save(sdat2, dat_Topa_benthic, land, logponds, kia_crs, 
-     file = "outputs/2021-09-20_cleaned-data.rda")
+save(sdat2, dat_Topa_benthic, land, logponds, kia_crs, distmat, 
+     file = "outputs/Cleaned-data.rda")
